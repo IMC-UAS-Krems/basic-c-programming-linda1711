@@ -7,7 +7,7 @@
 #define NCOLS 10
 
 int main(int argc, char *argv[]) {
-    // testing ./assignment NROWS NCOLS
+    // testing ./project NROWS NCOLS
     FILE *f;
     char line[256];
     char *token;
@@ -19,7 +19,7 @@ int main(int argc, char *argv[]) {
     }
 
     int nrows = 0, ncols = 0;
-    // Read the file line by line
+    // line by line read
     while (fgets(line, sizeof(line), f) != NULL) {
         // Remove the newline character at the end of the line (if present)
         line[strcspn(line, "\n")] = 0;
@@ -39,7 +39,7 @@ int main(int argc, char *argv[]) {
             }
             token = strtok(NULL, " \t");
         }
-        
+
         if (ncols != NCOLS) {
             fprintf(stderr, "Line %d number of columns not correct. Found %d columns, should have %d\n", nrows, ncols, NCOLS);
             fclose(f);
@@ -54,6 +54,6 @@ int main(int argc, char *argv[]) {
     }
 
     fclose(f);
-    
+
     return 0;
 }

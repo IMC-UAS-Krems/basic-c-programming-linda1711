@@ -10,16 +10,22 @@ TARGET = assignment
 # Define the source files
 SRC = assignment.c
 
+# Source files for the test program
+TEST_SRC = test.c
+
 # Rule to build the target executable
 $(TARGET): $(SRC)
 	$(CC) $(CFLAGS) -o $(TARGET) $(SRC)
+	
+# Build the test exe
+test: $(TARGET) $(TEST_SRC)
+	$(CC) $(CFLAGS) -o test $(TEST_SRC)
 
-test: $(TARGET) test.c
-	$(CC) $(CFLAGS) -o test test.c
+# Run tests
+test: $(TARGET) test
 	./$(TARGET) 5 10
 	./test
 
-# Rule to clean up the build files
+# Clean up the build files
 clean:
-	rm -f $(TARGET) test
-
+	rm -f $(TARGET) test matrix.txt

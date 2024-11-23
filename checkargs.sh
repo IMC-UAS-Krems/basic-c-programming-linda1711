@@ -1,13 +1,13 @@
 #!/bin/bash
 
-# Capture the command and expected output
+# Capture -> command; expected output
 program=$1
 expected_output=$2
 
-# Run the program and capture its output
+# Run program; capture output
 output=$($program)
 
-# Compare the output with the expected string
+# Compare -> actual output to expected output
 if [ "$output" == "$expected_output" ]; then
   exit 0
 else
