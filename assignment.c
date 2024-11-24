@@ -2,6 +2,10 @@
 #include <stdlib.h>
 #include <time.h>
 #include <ctype.h>
+#include <fcntl.h>
+#include <errno.h>
+#include <limits.h>
+#include <unistd.h>
 
 // String represents a positive integer
 int is_positive_integer(char *str) {
@@ -36,50 +40,41 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
+
+
     // Random number generator
     srand(time(NULL));
+    int min_r = 1;
+    int max_r = 100;
 
-    // Dynamically allocate the matrix
-    int **matrix = (int **)malloc(rows * sizeof(int *));
+    // Dynamic matrix
+    int** matrix = malloc(rows * sizeof(int*));
     if (matrix == NULL) {
         printf("Memory allocation failed!\n");
-        return 1;
+        exit(1);
     }
 
     for (int i = 0; i < rows; i++) {
-        matrix[i] = (int *)malloc(cols * sizeof(int));
+        matrix[i] = malloc(cols * sizeof(int));
         if (matrix[i] == NULL) {
             printf("Memory allocation failed!\n");
-            return 1;
+            exit(1);
         }
     }
 
-    // Fill the matrix -> int 1 - 100
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < cols; j++) {
-            matrix[i][j] = rand() % 100 + 1;
+    // Random numbers matrix fill
+    for (int x = 0; x < rows; x++) {
+        for (int y = 0; y < cols; y++) {
+            matrix[x][y] = min_r + rand() % (max_r - min_r + 1);
         }
     }
 
-    // Create, open output file
-    FILE *file = fopen("matrix.txt", "w");
-    if (file == NULL) {
-        printf("Could not open file!\n");
-        return 1;
-    }
-
-    // Width for printing numbers (alignment)
-    int field_width = 3; // Adjust based on the max number size
-
-    // Write the matrix into a file with colum alignment
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < cols; j++) {
-            fprintf(file, "%*d", field_width, matrix[i][j]); // *d allows dynamic width specification
-            if (j < cols - 1) {
-                fprintf(file, " ");  // Space between numbers
-            }
+    // Print
+    for (int x = 0; x < rows; x++) {
+        for (int y = 0; y < cols; y++) {
+            printf("%d ", matrix[x][y]);
         }
-        fprintf(file, "\n"); // End of row
+        printf("\n");
     }
 
     // Free allocated memory
@@ -88,13 +83,5 @@ int main(int argc, char *argv[]) {
     }
     free(matrix);
 
-    // Close file
-    fclose(file);
-
-    // Success message
-    printf("Matrix created successfully and written to 'matrix.txt'\n");
-
     return 0;
 }
-
-
